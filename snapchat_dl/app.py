@@ -1,87 +1,148 @@
-"""Commandline setup for snapchat_dl."""
+#======================================================================================================================
+# Commandline setup for Snapchat Downloader.
+#======================================================================================================================
+
 import sys
 import time
 
-import pyperclip
-from loguru import logger
+import pyperclip                                            # pyright: ignore[reportMissingModuleSource]
 
-from snapchat_dl.cli import parse_arguments
-from snapchat_dl.snapchat_dl import SnapchatDL
-from snapchat_dl.utils import NoStoriesFound
-from snapchat_dl.utils import search_usernames
-from snapchat_dl.utils import use_batch_file
-from snapchat_dl.utils import use_prefix_dir
-from snapchat_dl.utils import UserNotFoundError
+from datetime                   import datetime
+from datetime                   import timedelta
+from dateutil                   import tz                   # pyright: ignore[reportMissingModuleSource]
+
+from loguru                     import logger               # pyright: ignore[reportMissingImports]
+
+from snapchat_dl.snapchat_dl    import SnapchatDL           # pyright: ignore[reportMissingImports]
+from snapchat_dl.cli            import parseArguments       # pyright: ignore[reportMissingImports]
+from snapchat_dl.utils          import searchUsernames      # pyright: ignore[reportMissingImports]
+from snapchat_dl.utils          import processRootFolder    # pyright: ignore[reportMissingImports]
+from snapchat_dl.utils          import processBatchFile     # pyright: ignore[reportMissingImports]
+from snapchat_dl.utils          import UserNotFoundError    # pyright: ignore[reportMissingImports]
+from snapchat_dl.utils          import strftime             # pyright: ignore[reportMissingImports]
+
+historyUsernames = list()
+
+#----------------------------------------------------------------------------------------------------------------------
+def _downloadUsers(downloader, usernames: list, respectHistory=False, sleepInterval=1):
+    """
+    Download public content from a list of usernames.
+
+    Args:
+        usernames (list): List of usernames to download.
+        respectHistory (bool, optional): append username to history. Defaults to False.
+    """
+#----------------------------------------------------------------------------------------------------------------------
+    for username in usernames:
+        time.sleep(sleepInterval)
+
+        if respectHistory is True:
+            if username not in historyUsernames:
+                historyUsernames.append(username)
+                try:
+                    downloader.DownloadSnaps(username)
+                except UserNotFoundError:
+                    return
+        else:
+            try:
+                downloader.DownloadSnaps(username)
+            except UserNotFoundError:
+                return
 
 
+#----------------------------------------------------------------------------------------------------------------------
 def main():
-    """Download user stories from Snapchat."""
-    args = parse_arguments()
-    usernames = args.username + use_batch_file(args) + use_prefix_dir(args)
+    """Download a user's public content from Snapchat."""
+#----------------------------------------------------------------------------------------------------------------------
+    args = parseArguments()
 
-    downlaoder = SnapchatDL(
-        directory_prefix=args.save_prefix,
-        max_workers=args.max_workers,
-        limit_story=args.limit_story,
-        sleep_interval=args.sleep_interval,
+    env = "LOCALLY"
+    logColor = True
+    if args.automated is True:
+        logColor=False
+        env = "AUTOMATED"
+
+    def logFilterScreen(record):
+        if args.quiet is True:
+            return (record["level"].name == "DEBUG") or (record["level"].name == "ERROR")    
+        elif args.automated is True:
+            return record["level"].name != "INFO"
+        else:
+            return True
+
+    def logFilterFile(record):
+        return record["level"].name == "SUCCESS"
+
+    logger.remove()
+    logger.add(sys.stderr, filter=logFilterScreen, colorize=logColor, format="<bold>{message}</bold>")
+    logger.add("SnapchatDL.log", rotation="daily", colorize=False, format="{message}")
+    if args.automated is True:
+        logger.add("SnapchatDL-Automated.log", rotation="weekly", filter=logFilterFile, colorize=False, format="{message}")
+
+    dtUTC = datetime.now(tz.tzutc())
+    dtLocal = datetime.now(tz.tzlocal())
+    dtHome = datetime.now(tz.gettz('America/Detroit'))
+    offsetHome = dtHome.utcoffset() / timedelta(hours=1)
+    dtLocal = dtUTC + timedelta(hours=offsetHome)
+    timeStr = strftime(dtLocal.timestamp(), "%m-%d-%Y %H:%M")
+    msg = "\n" + \
+          "--------------------------------------------------------------------------------\n" + \
+          "<yellow>SnapchatDL 3.0</yellow> (running <green>{}</green> at <cyan>{}</cyan>)\n".format(env, timeStr) + \
+          "--------------------------------------------------------------------------------"
+    if args.automated is True:
+        logger.opt(colors=True).success(msg)
+    else:
+        logger.opt(colors=True).info(msg)
+
+    if args.scanRootFolder or args.batchFile:
+        usernames = processBatchFile(args) + processRootFolder(args)
+        if not usernames:
+            return
+    else:
+        usernames = args.username
+
+    downloader = SnapchatDL(
+        rootFolder=args.rootFolder,
+        maxWorkers=args.maxWorkers,
+        sleepInterval=args.sleepInterval,
         quiet=args.quiet,
-        dump_json=args.dump_json,
+        automated=args.automated,
+        dumpJSON=args.dumpJSON,
+        noMultipart=args.noMultipart,
+        generateScripts=args.generateScripts,
+        skipStories=args.skipStories,
+        skipCurated=args.skipCurated,
+        skipSpotlight=args.skipSpotlight,
+        fast=args.fast,
     )
 
-    history = list()
-
-    def download_users(users: list, respect_history=False):
-        """Download user story from usernames.
-
-        Args:
-            users (list): List of usernames to download.
-            respect_history (bool, optional): append username to history. Defaults to False.
-            log_str (str, optional): Log log_str to terminal. Defaults to None.
-        """
-        for username in users:
-            time.sleep(args.sleep_interval)
-
-            if respect_history is True:
-                if username not in history:
-                    history.append(username)
-                    try:
-                        downlaoder.download(username)
-                    except (NoStoriesFound, UserNotFoundError):
-                        pass
-            else:
-                try:
-                    downlaoder.download(username)
-                except (NoStoriesFound, UserNotFoundError):
-                    pass
-
     try:
-        download_users(usernames)
-        if args.scan_clipboard is True:
-            if args.quiet is False:
-                logger.info("Listening for clipboard change")
+        _downloadUsers(downloader, usernames)
+
+        if args.scanClipboard is True:
+            logger.info("\nListening for valid Snapchat story links added to the clipboard")
 
             while True:
-                usernames_clip = search_usernames(pyperclip.paste())
-                if len(usernames_clip) > 0:
-                    download_users(usernames_clip, respect_history=True)
+                clipboardUsernames = searchUsernames(pyperclip.paste())
+                if len(clipboardUsernames) > 0:
+                    _downloadUsers(downloader, clipboardUsernames, respectHistory=True)
 
                 time.sleep(1)
 
-        if args.check_update is True:
-            if args.quiet is False:
-                logger.info(
-                    "Scheduling story updates for {} users".format(len(usernames))
-                )
+        if args.checkUpdate is True:
+            logger.info("\nScheduling updates for {} users".format(len(usernames)))
 
             while True:
-                started_at = int(time.time())
-                download_users(usernames)
-                if started_at < args.interval:
-                    time.sleep(args.interval - started_at)
+                _downloadUsers(downloader, usernames)
+                time.sleep(args.updateInterval)
 
     except KeyboardInterrupt:
         exit(0)
 
+#----------------------------------------------------------------------------------------------------------------------
 
 if __name__ == "__main__":
     sys.exit(main())
+
+#======================================================================================================================
+#======================================================================================================================

@@ -1,8 +1,12 @@
-"""Top-level package for Snapchat Downloader."""
-
-__author__ = """Aakash Gajjar"""
-__email__ = "skyqutip@gmail.com"
+#======================================================================================================================
+# Top-level package for Snapchat Downloader.
+#======================================================================================================================
 
 from snapchat_dl.snapchat_dl import SnapchatDL
 
-__all__ = ["SnapchatDL"]
+__author__  = "Steve Hoek (based on work by Aakash Gajjar [skyqutip@gmail.com])"
+__email__   = "steve.hoek@gmail.com"
+__all__     = ["SnapchatDL"]
+
+#======================================================================================================================
+#======================================================================================================================
