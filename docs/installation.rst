@@ -32,13 +32,13 @@ You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/skyme5/snapchat-dl
+    $ git clone git://github.com/stevehoek/snapchat-dl
 
 Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl -OJL https://github.com/skyme5/snapchat-dl/tarball/master
+    $ curl -OJL https://github.com/stevehoek/snapchat-dl/tarball/master
 
 Once you have a copy of the source, you can install it with:
 
@@ -47,5 +47,5 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Github repo: https://github.com/skyme5/snapchat-dl
-.. _tarball: https://github.com/skyme5/snapchat-dl/tarball/master
+.. _Github repo: https://github.com/stevehoek/snapchat-dl
+.. _tarball: https://github.com/stevehoek/snapchat-dl/tarball/master

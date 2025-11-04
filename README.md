@@ -16,17 +16,17 @@
     </a>
     <a href="https://pypi.python.org/pypi/snapchat-dl">
       <img
-        src="https://img.shields.io/github/actions/workflow/status/skyme5/snapchat-dl/continuous-integration-pip.yml?cacheSeconds=360"
+        src="https://img.shields.io/github/actions/workflow/status/stevehoek/snapchat-dl/continuous-integration-pip.yml?cacheSeconds=360"
         alt="CI"
       />
     </a>
-    <a href="https://codecov.io/gh/skyme5/snapchat-dl">
+    <a href="https://codecov.io/gh/stevehoek/snapchat-dl">
       <img
-        src="https://img.shields.io/codecov/c/github/skyme5/snapchat-dl?cacheSeconds=360"
+        src="https://img.shields.io/codecov/c/github/stevehoek/snapchat-dl?cacheSeconds=360"
         alt="Code Coverage"
       />
     </a>
-    <a href="https://codecov.io/gh/skyme5/snapchat-dl">
+    <a href="https://codecov.io/gh/stevehoek/snapchat-dl">
       <img
         src="https://img.shields.io/pypi/pyversions/snapchat-dl"
         alt="Python Versions"
@@ -51,7 +51,6 @@
       />
     </a>
   </h1>
-  <a href="https://buymeacoffee.com/skyme5" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;" ></a>
   </div>
 </p>
 
@@ -66,7 +65,7 @@ pip install snapchat-dl
 Install from GitHub,
 
 ```bash
-pip install git+git://github.com/skyme5/snapchat-dl
+pip install git+git://github.com/stevehoek/snapchat-dl
 ```
 
 Unix users might want to add `--user` flag to install without requiring `sudo`.

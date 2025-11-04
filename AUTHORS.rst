@@ -5,7 +5,8 @@ Credits
 Development Lead
 ----------------
 
-* Aakash Gajjar <skyqutip@gmail.com>
+* Aakash Gajjar <skyqutip@gmail.com> (original author)
+* Steve Hoek <steve.hoek@gmail.com> (current maintainer)
 
 Contributors
 ------------

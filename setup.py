@@ -24,9 +24,9 @@ setup(
     description="Snapchat Public Stories Downloader.",
     long_description=readme,
     long_description_content_type="text/markdown",
-    url="https://github.com/skyme5/snapchat-dl",
-    author="Aakash Gajjar",
-    author_email="skyqutip@gmail.com",
+    url="https://github.com/stevehoek/snapchat-dl",
+    author="Steve Hoek",
+    author_email="steve.hoek@gmail.com",
     entry_points={
         "console_scripts": [
             "snapchat-dl=snapchat_dl.app:main",

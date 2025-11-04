@@ -9,7 +9,7 @@ You can contribute in many ways:
 
 ### Report Bugs
 
-Report bugs [here](https://github.com/skyme5/snapchat-dl/issues).
+Report bugs [here](https://github.com/stevehoek/snapchat-dl/issues).
 
 If you are reporting a bug, please include:
 
@@ -35,7 +35,7 @@ articles, and such.
 
 ### Submit Feedback
 
-The best way to send feedback is to file an issue  [here](https://github.com/skyme5/snapchat-dl/issues).
+The best way to send feedback is to file an issue  [here](https://github.com/stevehoek/snapchat-dl/issues).
 
 If you are proposing a feature:
 
@@ -100,7 +100,7 @@ Before you submit a pull request, check that it meets these guidelines:
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
 3. The pull request should work for Python 3.5, 3.6, 3.7 and 3.8, and for PyPy. Check
-   https://travis-ci.com/skyme5/snapchat-dl/pull_requests
+   https://travis-ci.com/stevehoek/snapchat-dl/pull_requests
    and make sure that the tests pass for all supported Python versions.
 
 ### Tips

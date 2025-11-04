@@ -47,8 +47,8 @@ master_doc = "index"
 
 # General information about the project.
 project = "Snapchat Downloader"
-copyright = "2020, Aakash Gajjar"
-author = "Aakash Gajjar"
+copyright = "2025, Steve Hoek"
+author = "Steve Hoek"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -128,7 +128,7 @@ latex_documents = [
         master_doc,
         "snapchat_dl.tex",
         "Snapchat Downloader Documentation",
-        "Aakash Gajjar",
+        "Steve Hoek",
         "manual",
     ),
 ]

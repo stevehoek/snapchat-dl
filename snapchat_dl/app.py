@@ -87,7 +87,7 @@ def main():
     timeStr = strftime(dtLocal.timestamp(), "%m-%d-%Y %H:%M")
     msg = "\n" + \
           "--------------------------------------------------------------------------------\n" + \
-          "<yellow>SnapchatDL 3.0</yellow> (running <green>{}</green> at <cyan>{}</cyan>)\n".format(env, timeStr) + \
+          "<yellow>SnapchatDL 3.0.0</yellow> (running <green>{}</green> at <cyan>{}</cyan>)\n".format(env, timeStr) + \
           "--------------------------------------------------------------------------------"
     if args.automated is True:
         logger.opt(colors=True).success(msg)
