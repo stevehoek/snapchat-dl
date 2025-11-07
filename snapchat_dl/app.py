@@ -71,7 +71,7 @@ def main():
             return True
 
     def logFilterFile(record):
-        return record["level"].name == "SUCCESS"
+        return (record["level"].name == "SUCCESS") or (record["level"].name == "ERROR") or (record["level"].name == "DEBUG")
 
     logger.remove()
     logger.add(sys.stderr, filter=logFilterScreen, colorize=logColor, format="<bold>{message}</bold>")
@@ -86,9 +86,9 @@ def main():
     dtLocal = dtUTC + timedelta(hours=offsetHome)
     timeStr = strftime(dtLocal.timestamp(), "%m-%d-%Y %H:%M")
     msg = "\n" + \
-          "--------------------------------------------------------------------------------\n" + \
+          "------------------------------------------------------------------------------------\n" + \
           "<yellow>SnapchatDL 3.0.0</yellow> (running <green>{}</green> at <cyan>{}</cyan>)\n".format(env, timeStr) + \
-          "--------------------------------------------------------------------------------"
+          "------------------------------------------------------------------------------------"
     if args.automated is True:
         logger.opt(colors=True).success(msg)
     else:

@@ -143,7 +143,7 @@ class SnapchatDL:
         try:
             response = self._apiRequestResponse(username)
             if not response:
-                logger.opt(colors=True).error("<red>Empty response when calling Snapchat API for user <magenta>{}</magenta> [Code: {}]</red>", username, requests.Response().status_code)
+                logger.opt(colors=True).error("<red>[⏹] Empty response when calling Snapchat API for user <magenta>{}</magenta> [Code: {}]</red>", username, requests.Response().status_code)
                 return [None, None, None, None, None]
 
             userFolder = os.path.join(self.rootFolder, username)
@@ -152,7 +152,7 @@ class SnapchatDL:
             responseRawJSON = re.findall(self.apiRegEx, response)
             if not responseRawJSON:
                 #logger.debug(response)
-                logger.opt(colors=True).error("<red>Unable to parse raw response from Snapchat API for user <magenta>{}</magenta> [Code: {}]</red>", username, requests.Response().status_code)
+                logger.opt(colors=True).error("<red>[⏹] Unable to parse raw response from Snapchat API for user <magenta>{}</magenta> [Code: {}]</red>", username, requests.Response().status_code)
                 return [None, None, None, None, None]
 
             dumpResponse(responseRawJSON, os.path.join(userFolder, username+"_raw.json"))
@@ -161,7 +161,7 @@ class SnapchatDL:
                 content = json.loads(responseRawJSON[0])
             else:
                 #logger.debug(responseRawJSON)
-                logger.opt(colors=True).error("<red>Unable to index parsed response from Snapchat API for user <magenta>{}</magenta> [Code: {}]</red>", username, requests.Response().status_code)
+                logger.opt(colors=True).error("<red>[⏹] Unable to index parsed response from Snapchat API for user <magenta>{}</magenta> [Code: {}]</red>", username, requests.Response().status_code)
                 return [None, None, None, None, None]
 
             userProfile = self._parseUserProfile(content, username)
@@ -172,15 +172,15 @@ class SnapchatDL:
             return content, userProfile, publicStories, curatedHighlights, spotlightHighlights
 
         except requests.exceptions.ConnectTimeout:
-            logger.opt(colors=True).error("<red>Connection timeout calling Snapchat API for user <magenta>{}</magenta> [Code: {}]</red>", username, requests.Response().status_code)
+            logger.opt(colors=True).error("<red>[⏹] Connection timeout calling Snapchat API for user <magenta>{}</magenta> [Code: {}]</red>", username, requests.Response().status_code)
             return [None, None, None, None, None]
 
         except UserNotFoundError:
-            logger.opt(colors=True).error("<red>[x] <magenta>{}</magenta> is not a valid user [Code: {}]</red>\n".format(username, requests.Response().status_code))
+            logger.opt(colors=True).error("<red>[⏹] <magenta>{}</magenta> is not a valid user [Code: {}]</red>\n".format(username, requests.Response().status_code))
             return [None, None, None, None, None]
 
         except (IndexError, KeyError, ValueError):
-            logger.opt(colors=True).error("<red>Exception calling Snapchat API for user <magenta>{}</magenta> [Code: {}]</red>", username, requests.Response().status_code)
+            logger.opt(colors=True).error("<red>[⏹] Exception calling Snapchat API for user <magenta>{}</magenta> [Code: {}]</red>", username, requests.Response().status_code)
             return [None, None, None, None, None]
 
 
@@ -388,7 +388,7 @@ class SnapchatDL:
         if (downloadCount > 0):
             msg = "[✔] " + msg
         else:
-            msg = "[-] " + msg
+            msg = "[∅] " + msg
         if (downloadCount > 0):
             logger.opt(colors=True).success(msg)
         elif not self.automated:
@@ -481,7 +481,7 @@ class SnapchatDL:
         if (downloadCount > 0):
             msg = "[✔] " + msg
         else:
-            msg = "[-] " + msg
+            msg = "[∅] " + msg
         if (downloadCount > 0):
             logger.opt(colors=True).success(msg)
         elif not self.automated:
@@ -569,7 +569,7 @@ class SnapchatDL:
         if (downloadCount > 0):
             msg = "[✔] " + msg
         else:
-            msg = "[-] " + msg
+            msg = "[∅] " + msg
         if (downloadCount > 0):
             logger.opt(colors=True).success(msg)
         elif not self.automated:
@@ -624,7 +624,7 @@ class SnapchatDL:
             if not self.skipStories:
                 self._downloadPublicStories(userProfile, publicStories)
         else:
-            logger.opt(colors=True).info("\n[-] <magenta>{}</magenta> has no public stories".format(username))
+            logger.opt(colors=True).info("\n[∅] <magenta>{}</magenta> has no public stories".format(username))
 
         #download curated highlights
         if len(curatedHighlights) > 0:
@@ -632,7 +632,7 @@ class SnapchatDL:
             if not self.skipCurated:
                 self._downloadCuratedHighlights(userProfile, curatedHighlights)
         else:
-            logger.opt(colors=True).info("\n[-] <magenta>{}</magenta> has no curated highlights".format(username))
+            logger.opt(colors=True).info("\n[∅] <magenta>{}</magenta> has no curated highlights".format(username))
 
         #download spotlight highlights
         if len(spotlightHighlights) > 0:
@@ -640,7 +640,7 @@ class SnapchatDL:
             if not self.skipSpotlight:
                 self._downloadSpotlightHighlights(userProfile, spotlightHighlights)
         else:
-            logger.opt(colors=True).info("\n[-] <magenta>{}</magenta> has no spotlight highlights".format(username))
+            logger.opt(colors=True).info("\n[∅] <magenta>{}</magenta> has no spotlight highlights".format(username))
 
         logger.opt(colors=True).info("\n[✔] Completed processing for <magenta>{}</magenta>\n".format(username))
 

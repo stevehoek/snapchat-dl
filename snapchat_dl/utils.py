@@ -109,7 +109,7 @@ def processBatchFile(args: Namespace) -> list:
     usernames = list()
     if args.batchFile is not None:
         if os.path.isfile(args.batchFile) is False:
-            logger.opt(colors=True).error("[x] <red>Invalid batch file at <blue>{}</blue></red>\n".format(args.batchFile))
+            logger.opt(colors=True).error("<red>[⏹] Invalid batch file at <blue>{}</blue></red>\n".format(args.batchFile))
             return []
 
         with open(args.batchFile, "r") as file:
@@ -138,7 +138,7 @@ def processRootFolder(args: Namespace):
     usernames = list()
     if args.scanRootFolder:
         if os.path.isdir(args.rootFolder) is False:
-            logger.opt(colors=True).error("[x] <red>Root folder does not exist at <blue>{}</blue></red>\n".format(args.rootFolder))
+            logger.opt(colors=True).error("<red>[⏹] Root folder does not exist at <blue>{}</blue></red>\n".format(args.rootFolder))
             return []
 
         for folder in os.listdir(args.rootFolder):

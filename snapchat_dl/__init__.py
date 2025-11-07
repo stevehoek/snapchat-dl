@@ -4,7 +4,7 @@
 
 from snapchat_dl.snapchat_dl import SnapchatDL
 
-__author__  = "Steve Hoek (based on work by Aakash Gajjar [skyqutip@gmail.com])"
+__author__  = "Steve Hoek (based on work by Aakash Gajjar)"
 __email__   = "steve.hoek@gmail.com"
 __all__     = ["SnapchatDL"]
 

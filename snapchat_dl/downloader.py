@@ -50,7 +50,7 @@ def DownloadUrl(url:str, pathname:str, sleepInterval:int=0, quiet:bool=False, au
         if response.status_code != requests.codes.ok:   #requests.codes.get("ok")
             raise response.raise_for_status()
     except requests.exceptions.HTTPError:
-        logger.opt(colors=True).error("<red>HTTPError {}</red> for <blue>{}</blue>", requests.Response().status_code, url)
+        logger.opt(colors=True).error("<red>[⏹] HTTPError {}</red> for <blue>{}</blue>", requests.Response().status_code, url)
         return False
 
     try:
@@ -72,7 +72,7 @@ def DownloadUrl(url:str, pathname:str, sleepInterval:int=0, quiet:bool=False, au
                         handle.write(data)
                     handle.close()
                 except requests.exceptions.RequestException as e:
-                    logger.opt(colors=True).error("<red>"+e.strerror+"/red")
+                    logger.opt(colors=True).error("<red>[⏹] "+e.strerror+"/red")
 
             #Rate limiting
             time.sleep(sleepInterval)
