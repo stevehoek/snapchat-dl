@@ -52,7 +52,9 @@ def _downloadUsers(downloader, usernames: list, respectHistory=False, sleepInter
 
 #----------------------------------------------------------------------------------------------------------------------
 def main():
-    """Download a user's public content from Snapchat."""
+    """
+    Download a user's public content from Snapchat.
+    """
 #----------------------------------------------------------------------------------------------------------------------
     args = parseArguments()
 

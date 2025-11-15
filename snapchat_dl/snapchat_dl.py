@@ -30,7 +30,9 @@ MAXRETRYCOUNT   = 5
 
 #----------------------------------------------------------------------------------------------------------------------
 class SnapchatDL:
-    """Download a user's public content from Snapchat."""
+    """
+    Download a user's public content from Snapchat.
+    """
 #----------------------------------------------------------------------------------------------------------------------
 
     #----------------------------------------------------------------------------------------------------------------------
@@ -177,7 +179,7 @@ class SnapchatDL:
 
         except UserNotFoundError:
             logger.opt(colors=True).error("<red>[⏹] <magenta>{}</magenta> is not a valid user [Code: {}]</red>\n".format(username, requests.Response().status_code))
-            return [None, None, None, None, None]
+            return ['nouser', None, None, None, None]
 
         except (IndexError, KeyError, ValueError):
             logger.opt(colors=True).error("<red>[⏹] Exception calling Snapchat API for user <magenta>{}</magenta> [Code: {}]</red>", username, requests.Response().status_code)
@@ -335,7 +337,7 @@ class SnapchatDL:
                 dirname = os.path.join(self.rootFolder, username, "Public Stories", dateFolder)
                 os.makedirs(dirname, exist_ok=True)
 
-                if timestampLocal == lastTimestamp:
+                if (timestampLocal == lastTimestamp) and (mediaType == 1):
                     multipartStoryCount += 1
                 else:
                     if not self.noMultipart:
@@ -355,11 +357,12 @@ class SnapchatDL:
                         username, multipartStoryCount, MEDIATYPES[mediaType]
                     )
                     
-                lastTimestamp = timestampLocal
                 multipartFileList += " -i "
                 multipartFileList += "\"" 
                 multipartFileList += os.path.join(dirname, filename)
                 multipartFileList += "\"" 
+
+                lastTimestamp = timestampLocal
 
                 if self.dumpJSON:
                     filename = os.path.join(dirname, Path(filename).stem + ".json")
@@ -593,6 +596,9 @@ class SnapchatDL:
         while retryCount < MAXRETRYCOUNT:
             retryCount += 1
             content, userProfile, publicStories, curatedHighlights, spotlightHighlights = self._apiProcessResponse(username)
+            if content == 'nouser':
+                content = []
+                break
             if content:
                 break
 

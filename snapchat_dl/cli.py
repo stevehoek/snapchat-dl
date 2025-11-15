@@ -8,9 +8,13 @@ import sys
 
 #----------------------------------------------------------------------------------------------------------------------
 def parseArguments():
-    """Command parser for Snapchat Downloader."""
+    """
+    Command parser for Snapchat Downloader.
+    """
 #----------------------------------------------------------------------------------------------------------------------
-    parser = argparse.ArgumentParser(prog="snapchat-dl")
+    parser = argparse.ArgumentParser(prog="snapchat-dl",
+                                     description="Download public content from Snapchat users.",
+                                     epilog="Developed by Steve Hoek (based on work by Aakash Gajjar)")
 
     parser.add_argument(
         "username",
@@ -64,7 +68,7 @@ def parseArguments():
     )
 
     parser.add_argument(
-        "-ss",
+        "-1",
         "--skip-stories",
         action="store_true",
         help="Skip downloading public stories.",
@@ -72,7 +76,7 @@ def parseArguments():
     )
 
     parser.add_argument(
-        "-sc",
+        "-2",
         "--skip-curated",
         action="store_true",
         help="Skip downloading curated highlights.",
@@ -80,7 +84,7 @@ def parseArguments():
     )
 
     parser.add_argument(
-        "-sh",
+        "-3",
         "--skip-spotlight",
         action="store_true",
         help="Skip downloading spotlight highlights.",
@@ -104,7 +108,7 @@ def parseArguments():
     )
 
     parser.add_argument(
-        "-nm",
+        "-m",
         "--no-multipart",
         action="store_true",
         help="Don't combine multipart stories.",
@@ -112,7 +116,7 @@ def parseArguments():
     )
     
     parser.add_argument(
-        "-w",
+        "-t",
         "--max-workers",
         action="store",
         default=4,
@@ -122,7 +126,7 @@ def parseArguments():
     )
 
     parser.add_argument(
-        "-ui",
+        "-w",
         "--update-interval",
         action="store",
         default=60 * 10,
@@ -132,7 +136,7 @@ def parseArguments():
     )
 
     parser.add_argument(
-        "-si",
+        "-p",
         "--sleep-interval",
         action="store",
         default=1,
@@ -142,7 +146,7 @@ def parseArguments():
     )
 
     parser.add_argument(
-        "-fast",
+        "-z",
         "--fast",
         action="store_true",
         help="Skip online size checks for snap media.",
