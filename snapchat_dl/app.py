@@ -10,6 +10,7 @@ import pyperclip                                            # pyright: ignore[re
 from datetime                   import datetime
 from datetime                   import timedelta
 from dateutil                   import tz                   # pyright: ignore[reportMissingModuleSource]
+from timeit                     import default_timer as timer
 
 from loguru                     import logger               # pyright: ignore[reportMissingImports]
 
@@ -56,6 +57,8 @@ def main():
     Download a user's public content from Snapchat.
     """
 #----------------------------------------------------------------------------------------------------------------------
+    start = timer()
+
     args = parseArguments()
 
     env = "LOCALLY"
@@ -137,6 +140,24 @@ def main():
             while True:
                 _downloadUsers(downloader, usernames)
                 time.sleep(args.updateInterval)
+
+        end = timer()
+        elapsedSeconds = (end - start)
+        elapsedMinutes = elapsedSeconds / 60
+        elapsedTime = elapsedMinutes
+        timeUnit = "minutes"
+        if (elapsedMinutes < 1):
+            elapsedTime = elapsedSeconds
+            timeUnit = "seconds"
+
+        msg = "\n" + \
+            "------------------------------------------------------------------------------------\n" + \
+            "<green>Completed in</green> <cyan>{}</cyan> <green>{}</green>\n".format(round(elapsedTime, 1), timeUnit) + \
+            "------------------------------------------------------------------------------------\n"
+        if args.automated is True:
+            logger.opt(colors=True).success(msg)
+        else:
+            logger.opt(colors=True).info(msg)
 
     except KeyboardInterrupt:
         exit(0)

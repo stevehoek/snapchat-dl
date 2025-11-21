@@ -425,8 +425,11 @@ class SnapchatDL:
                 #logger.debug(json.dumps(highlight, indent=4))
                 groupTitle = highlight["storyTitle"]["value"]
                 if len(groupTitle) == 0:
-                    group += 1
-                    groupTitle = "Highlight-{}".format(group)
+                    groupTitle = highlight["highlightId"]["value"]
+                    if len(groupTitle) == 0:
+                        group += 1
+                        groupTitle = "Highlight-{}".format(group)
+                
                 snapCount = 0
                 snaps = highlight["snapList"]
                 for snap in snaps:
